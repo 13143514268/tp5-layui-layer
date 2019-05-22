@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>我的“书屋”</title>
+<link rel="stylesheet" href="__STATIC__/home/login/css/index.css" />
+<script src="__STATIC__/home/login/js/jquery2.0.3.min.js"></script>
+<script type="text/javascript" src="__STATIC__/home/login/layer/layer.js"></script>
+</head>
+
+<body>
+<img src="__STATIC__/home/login/img/bgImg.jpg" class="bgImg" />
+<div class="content">
+	<div class="bidTitle">我的“书屋”登录</div>
+	<div class="logCon">
+		<div class="line"><span>账号:</span>
+		<input id="username" class="bt_input" type="text" /></div>
+		<div class="line"><span>密码:</span>
+		<input id="password" class="bt_input" type="password" /></div>
+		<button id="form1" type="button" class="logingBut">登录</button>
+	</div>
+</div>
+<div style="text-align:center;">
+</div>
+</body>
+<script>
+    $(function () {
+        $('#form1').click(function () {
+
+        	// layer.msg()
+        	// alert(11111);
+            //获取数据
+            var username = $('#username').val();
+            var password = $('#password').val();
+            if (username == '') {
+            	layer.msg('用户名不可为空', {icon: 2});
+                $('#username').focus();
+                return false;
+            }
+            if (password == '') {
+            	layer.msg('密码不可为空', {icon: 2});
+                $('#password').focus();
+                return false;
+            }
+         
+          $.ajax({
+                url: "{:url('Login/dologin')}",
+                type: 'post',
+                data: {'username': username, 'password': password},
+                dataType:'json',
+                success: function (d) {
+                	data =JSON.parse(d);
+                    if (data.num == 1) {
+                        location.href = "{:url('Index/index')}";
+                    } else {
+                    	 layer.msg('信息错误，登录失败', {icon: 2});
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                   /*  alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus); */
+                   
+                        //location.href = "{:url('Index/index')}";
+                  
+                }
+            }); 
+            return false;//禁用 form表单自身的提交 
+        });
+    });  
+</script>
+
+</html>
